@@ -9,11 +9,13 @@ project(radar_viz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
+  cartographer_ros_msgs
   gmapping
   roscpp
   rospy
   std_msgs
   tf2
+  pose_graph_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -50,11 +52,10 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   Message1.msg
-#   Message2.msg
-# )
+#add_message_files(
+#  FILES
+#  PoseGraph.msg
+#)
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -71,10 +72,11 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   geometry_msgs#   octomap_msgs#   std_msgs
-# )
+#generate_messages(
+#  DEPENDENCIES
+#  geometry_msgs
+#  roscpp
+#)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -106,9 +108,9 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
+   INCLUDE_DIRS include
 #  LIBRARIES radar_viz
-#  CATKIN_DEPENDS geometry_msgs octomap octomap_msgs octomap_ros octomap_sever roscpp rospy std_msgs tf2
+CATKIN_DEPENDS geometry_msgs roscpp rospy std_msgs tf2 pose_graph_msgs
 #  DEPENDS system_lib
 )
 
@@ -137,7 +139,8 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/radar_viz_node.cpp)
-
+add_executable(pose_graph src/pose_graph.cpp)
+add_dependencies(pose_graph pose_graph_msgs_generate_messages_cpp)
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use
@@ -149,9 +152,10 @@ include_directories(
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(${PROJECT_NAME}_node
-#   ${catkin_LIBRARIES}
-# )
+target_link_libraries(
+  pose_graph
+  ${catkin_LIBRARIES}
+)
 
 #############
 ## Install ##
