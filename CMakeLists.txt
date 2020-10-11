@@ -14,8 +14,8 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
-  tf2
   pose_graph_msgs
+  nav_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -110,7 +110,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
    INCLUDE_DIRS include
 #  LIBRARIES radar_viz
-CATKIN_DEPENDS geometry_msgs roscpp rospy std_msgs tf2 pose_graph_msgs
+CATKIN_DEPENDS geometry_msgs roscpp rospy std_msgs pose_graph_msgs
 #  DEPENDS system_lib
 )
 
@@ -139,8 +139,6 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/radar_viz_node.cpp)
-add_executable(pose_graph src/pose_graph.cpp)
-add_dependencies(pose_graph pose_graph_msgs_generate_messages_cpp)
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use
@@ -150,12 +148,13 @@ add_dependencies(pose_graph pose_graph_msgs_generate_messages_cpp)
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# add_dependencies(pose_graph_2_odom pose_graph_msgs_generate_messages_cpp)
+# add_dependencies(pose_graph pose_graph_msgs_generate_messages_cpp)
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(
-  pose_graph
-  ${catkin_LIBRARIES}
-)
+#target_link_libraries(
+#  ${catkin_LIBRARIES}
+#)
 
 #############
 ## Install ##
@@ -211,3 +210,10 @@ target_link_libraries(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+add_executable(pose_graph src/pose_graph.cpp)
+target_link_libraries(pose_graph ${catkin_LIBRARIES})
+add_dependencies(pose_graph pose_graph_msgs_generate_messages_cpp)
+
+add_executable(pose_graph_2_odom src/pose_graph_2_odom.cpp)
+target_link_libraries(pose_graph_2_odom ${catkin_LIBRARIES})
+add_dependencies(pose_graph pose_graph_msgs_generate_messages_cpp)
