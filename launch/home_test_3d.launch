@@ -23,6 +23,6 @@
 	<node name="rviz" pkg="rviz" type="rviz" required="true" args="-d $(find radar_viz)/configs/cartographer_rviz.rviz"/>
 	
 	<!-- Bags -->
-	<node pkg="rosbag" type="play" name="player" args="--clock /home/kyle/data/radar/dca/no_tf_ec_hallways_run0.bag"/>
+	<node pkg="rosbag" type="play" name="player" args="--clock -k /home/kyle/data/radar/dca/no_tf_ec_hallways_run0.bag"/>
 	
 </launch>
