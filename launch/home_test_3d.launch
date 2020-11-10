@@ -7,6 +7,9 @@
   	<arg name="enable_mapping" 		default="0"/>
 	<arg name="vehicle_name"	default="H01"/>
 	<arg name="enable_offline" 	default="0"/>
+	<arg name="input_bag_flags" default="--clock -k"/>
+	<arg name="input_bag_filename" default="/home/kyle/data/radar/dca/no_tf_ec_hallways_run0.bag"/>
+	<arg name="output_bag_filename" default="/home/kyle/data/radar/icra/icra2021_test_data/ICRA2021_test_data/odom/ec_hallways_run0_odom.bag"/>
 		
 	<!-- For bags -->
 	<param name="/use_sim_time" value="true" if="$(arg enable_sim)"/>
@@ -22,7 +25,12 @@
 	<!-- Rviz -->
 	<node name="rviz" pkg="rviz" type="rviz" required="true" args="-d $(find radar_viz)/configs/cartographer_rviz.rviz"/>
 	
+	<!-- Pose Graph Launcher -->
+    <node pkg="radar_viz" type="pose_graph" name="pose_graph" output="screen"/>
+	
+	<node pkg="rosbag" type="record" name="odom_recorder" output="screen" args="-O $(output_bag_filename) carto_odom"/>
+
 	<!-- Bags -->
-	<node pkg="rosbag" type="play" name="player" args="--clock -k /home/kyle/data/radar/dca/no_tf_ec_hallways_run0.bag"/>
+	<node pkg="rosbag" type="play" name="player" args="$(flags) $(bag_file_name)"/>
 	
 </launch>

@@ -1,10 +1,6 @@
 <?xml version="1.0" ?>
 
 <launch>
-    <arg name="experiment_name" default="ec_hallway"/>
     <node pkg="radar_viz" type="pose_graph" name="pose_graph" output="screen"/>
-    <node pkg="radar_Viz" type="pose_graph_2_odom" name="pose_convert" output="screen"/>
-    <node pkg="rosbag" type="record" name="odom_recorder" output="screen" 
-        args="--output-prefix /home/kyle/data/icra/icra2021_test_data/ICRA2021_test_data/odom/$(arg experiment_name)
-        carto_odom"/>
+    <!-- <node pkg="radar_Viz" type="pose_graph_2_odom" name="pose_convert" output="screen"/> -->
 </launch>
