@@ -2,24 +2,58 @@
     <!-- For bags -->
 	<!-- <param name="/use_sim_time" value="true"/> -->
     <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
+      <!-- Topic renaming as necessary -->
       <remap from="scan" to="radar2lidar/scan"/>
-      <param name="map_update_interval" value="5.0"/>
+
+      <!-- Parameters -->
+      <!-- Frames -->
+      <param name="base_frame" value="imu_viz_link"/>
+      <param name="map" value="H01/radar/map"/>
+      <param name="odom" value="H01/radar/map"/> <!--?-->
+
+
+      <!-- Map update parameters -->
+      <!-- Update rate, lower = faster -->
+      <param name="map_update_interval" value="1.0"/>
+      <!-- Maximum range of radar, lowered to eliminate multipath/spurious meas -->
       <param name="maxUrange" value="16.0"/>
+      <!-- sigma used for "greedy endpoint matching" (investigate) -->
       <param name="sigma" value="0.05"/>
+      <!-- kernel to look for correspondence (investicage) -->
       <param name="kernelSize" value="1"/>
+      <!-- linear and angular optimization steps (for scan matching) -->
       <param name="lstep" value="0.05"/>
       <param name="astep" value="0.05"/>
+      <!-- How many iterations before scan matched -->
       <param name="iterations" value="5"/>
+      <!-- sigma used for likelihood computation (investigate) -->
       <param name="lsigma" value="0.075"/>
+      <!-- gain used while evaluating likelihood, for smoothing resampling effects-->
       <param name="ogain" value="3.0"/>
+      <!-- Skip this number of beams per scan -->
       <param name="lskip" value="0"/>
+      <!-- Minimum score for "good" scan matach, raise to avoid jumping est -->
+      <param name="minimumScore" value="0"/>
+      
+      <!-- Odometry error (investigate) -->
+      <!-- translation = f(translation) -->
       <param name="srr" value="0.1"/>
+      <!-- translation = f(rotation) -->
       <param name="srt" value="0.2"/>
+      <!-- rotation = f(translation) -->
       <param name="str" value="0.1"/>
+      <!-- rotation = f(rotation)-->
       <param name="stt" value="0.2"/>
+
+      <!-- Process map if robot has -->
+      <!-- Translated this far -->
       <param name="linearUpdate" value="1.0"/>
+      <!-- Rotated this much -->
       <param name="angularUpdate" value="0.5"/>
+      <!-- This much time has passed -->
       <param name="temporalUpdate" value="3.0"/>
+
+      <!-- Particle filter parameters -->
       <param name="resampleThreshold" value="0.5"/>
       <param name="particles" value="30"/>
       <param name="xmin" value="-50.0"/>
@@ -32,10 +66,5 @@
       <param name="lasamplerange" value="0.005"/>
       <param name="lasamplestep" value="0.005"/>
     </node>
-
-    <!-- Rviz -->
-	<include file="$(find cartographer_testing_cave)/launch/rviz.launch"/>
-
-<node pkg="rosbag" type="play" name="player" args="/home/kyle/Downloads/H01_45deg_2020_0627_processed_x1_2020_0821v1.bag"/>
 
 </launch>
