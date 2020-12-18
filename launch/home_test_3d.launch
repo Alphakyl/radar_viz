@@ -31,6 +31,6 @@
 	<node pkg="rosbag" type="record" name="odom_recorder" output="screen" args="-O $(output_bag_filename) carto_odom"/>
 
 	<!-- Bags -->
-	<node pkg="rosbag" type="play" name="player" args="$(flags) $(bag_file_name)"/>
+	<node pkg="rosbag" type="play" name="player" args="$(flags) $(bag_file_name)" if="$(arg enable_sim)"/>
 	
 </launch>
